@@ -6,6 +6,42 @@ const cartMain = document.getElementById('cart__items');
 const cartDiv = document.createElement('div');
 cartMain.appendChild(cartDiv);
 cartDiv.className = 'cart__item_img';
+// const kanapApi =  fetch(`http://localhost:3000/api/products/`).then(prod => prod.map(prod))
+const idApi = () => {
+  // Promise.all(`http://localhost:3000/api/products/`).then(res => res.map(res))
+  fetch(`http://localhost:3000/api/products/`)
+  .then(response => {
+      switch (response.status) {
+          case 200:
+              return response.json();
+          case 404:
+              alert("Page introuvable");
+              break;
+          case 500:
+              alert("Le serveur a rencontré une erreur");
+              break;
+          default:
+              alert("Erreur introuvable");
+              break;
+      }
+  })
+  .then(allProducts => {
+      // Récupérer tous les produits de l'API
+      for (let i of allProducts){
+          AllProdjsonucts.push(i)
+      };
+     
+      // boucle pour récupérer les valeurs des produits du panier
+      for(let p of cart.basket) {
+          // récupérer les id pour le POST
+          products.push(p.id);
+          // retrouver dans les produits de l'API, les produits du panier
+          let product = allProducts.find(product => product._id == p.id);
+      
+          // afficher cart__item pour chaque produit
+          displayCartItem(product, p); 
+    }})
+}
 
 
 
@@ -22,7 +58,7 @@ let AllProducts = new Array();
 displayCart = () => {
     console.log("Affichage panier");
     // récupérer les produits de l'API
-    fetch('http://localhost:3000/api/products/')
+    fetch(`http://localhost:3000/api/products/`)
     .then(response => {
         switch (response.status) {
             case 200:
@@ -52,7 +88,7 @@ displayCart = () => {
             let product = allProducts.find(product => product._id == p.id);
         
             // afficher cart__item pour chaque produit
-            displayCartItem(product, p); 
+            displayCartItem(product, p);
               
         }
         listenInputQuantity();
