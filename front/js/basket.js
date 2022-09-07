@@ -3,7 +3,7 @@ class Basket {
         //  récupèration des données du localStorage
         let basket = localStorage.getItem('basket');
         if (basket == null) {
-            this.basket = [];
+            this.basket = new Array();
         } else {
             this.basket = JSON.parse(basket);
             //conversion des objets du local storage en format js.
@@ -28,7 +28,7 @@ class Basket {
         this.save();
     }
     remove(product) {
-        this.basket = this.basket.filter(p => p.id != product.id && p.option_produit != product.option_produit);
+        this.basket = this.basket.filter(p => { return !(p.id == product.id && p.option_produit == product.option_produit) });
         this.save();
     }
     changeQuantity(product, quantity) {
@@ -63,4 +63,3 @@ class Basket {
 }
 
 let cart = new Basket();
-
